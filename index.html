@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Portfolio - Angelica Angel</title>
+<style>
+  /* Reset and base */
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+  }
+  body, html {
+    height: 100%;
+    background-color: #121212;
+    color: #ffffff;
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+  }
+  /* Starry background canvas fills entire page */
+  #starfield {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: #000011;
+  }
+  nav {
+    background-color: rgba(0, 242, 255, 0.1);
+    padding: 15px 30px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  }
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .logo {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #00f2ff;
+    text-decoration: none;
+  }
+  .nav-links {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+  }
+  .nav-links a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  .nav-links a:hover {
+    background-color: #00f2ff;
+    color: #121212;
+  }
+  /* Header with profile image on left and typing animation on name */
+  header {
+    max-width: 1000px;
+    margin: 50px auto;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    box-shadow: 0 0 30px rgba(0, 242, 255, 0.5);
+  }
+  .profile-photo {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 8px solid #00f2ff;
+    box-shadow: 0 0 30px #00f2ff;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .profile-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .header-text {
+    flex: 1;
+    color: #00f2ff;
+    font-weight: 600;
+    min-width: 250px;
+  }
+  .typing {
+    font-size: 3rem;
+    font-weight: 900;
+    font-family: monospace;
+    white-space: nowrap;
+    border-right: 4px solid #00f2ff;
+    overflow: hidden;
+    width: 0;
+    animation: typing 4s steps(20) forwards, blink 0.75s step-end infinite;
+  }
+  @keyframes typing {
+    0% { width: 0 }
+    100% { width: 15ch }
+  }
+  @keyframes blink {
+    50% { border-color: transparent }
+  }
+  p.subtitle {
+    margin-top: 10px;
+    font-size: 1.3rem;
+    color: #66e0ff;
+  }
+  p.desc {
+    margin-top: 12px;
+    font-size: 1.1rem;
+    color: #aaccee;
+  }
+  .social-icons {
+    margin-top: 15px;
+  }
+  .social-icons a {
+    color: #00f2ff;
+    margin-right: 20px;
+    font-size: 1.5rem;
+    transition: color 0.3s ease;
+  }
+  .social-icons a:hover {
+    color: #4deeff;
+  }
+  .btn {
+    margin-top: 20px;
+    padding: 12px 28px;
+    background-color: #00f2ff;
+    color: black;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+    display:inline-block;
+    text-align:center;
+    text-decoration:none;
+  }
+  .btn:hover {
+    background-color: #00cddd;
+  }
+  /* Sections styling */
+  section {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 18px;
+    padding: 3rem 2rem 3.5rem;
+    margin: 3rem auto;
+    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.5);
+    max-width: 1000px;
+    color: #d9eaff;
+  }
+  /* Glowing effect for about section and inline text on photo */
+  #about {
+    box-shadow:
+      0 0 15px 4px rgba(0, 242, 255, 0.8),
+      0 0 30px 8px rgba(0, 242, 255, 0.6),
+      0 0 50px 12px rgba(0, 242, 255, 0.4);
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    flex-wrap: nowrap;
+    flex-direction: row;
+  }
+  #about img.about-photo {
+    width: 220px;
+    height: 220px;
+    border-radius: 20px;
+    object-fit: cover;
+    box-shadow: 0 0 20px #00f2ff;
+    flex-shrink: 0;
+  }
+  #about p {
+    flex: 1 1 auto;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: #99dfff;
+  }
+  section h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 2.5rem;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+    width: 100%;
+  }
+  /* Projects section with scroll removed */
+  #projects {
+    scroll-snap-type: none;
+  }
+  #projects .project-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.4rem;
+  }
+  .project-card {
+    background: rgba(0, 242, 255, 0.15);
+    border-radius: 20px;
+    box-shadow: 0 12px 25px rgba(0, 242, 255, 0.4);
+    overflow: hidden;
+    color: #003344;
+    transition: all 0.3s ease;
+  }
+  .project-card:hover {
+    background: rgba(0, 242, 255, 0.3);
+    box-shadow: 0 18px 35px rgba(0, 242, 255, 0.7);
+    transform: translateY(-8px);
+  }
+  .project-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-bottom: 2px solid rgba(0, 242, 255, 0.4);
+    filter: brightness(1);
+    transition: filter 0.35s ease;
+  }
+  .project-card:hover .project-image {
+    filter: brightness(1.1);
+  }
+  .project-content {
+    padding: 1.4rem 2rem 2rem;
+  }
+  .project-content h3 {
+    margin: 0 0 1rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #002233;
+  }
+  .project-content p {
+    font-size: 1.1rem;
+    color: #004466;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  .project-content a.cta {
+    margin-top: 1.3rem;
+    display: inline-block;
+    background: #004466;
+    color: #00f2ff;
+    padding: 0.6rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 700;
+    box-shadow: 0 4px 13px rgba(0, 242, 255, 0.7);
+    transition: background 0.35s ease, color 0.35s ease;
+    text-decoration: none;
+  }
+  .project-content a.cta:hover {
+    background: #007799;
+    color: #d0faff;
+  }
+  #skills .skills-list {
+    max-width: 760px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.6rem;
+  }
+  .skill {
+    background: rgba(0, 242, 255, 0.15);
+    padding: 0.7rem 1.6rem;
+    border-radius: 30px;
+    color: #003344;
+    font-weight: 600;
+    font-size: 1.04rem;
+    box-shadow: 0 4px 15px rgba(0, 242, 255, 0.6);
+    cursor: default;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
+  }
+  .skill:hover {
+    background: rgba(0, 242, 255, 0.4);
+    color: #001922;
+    box-shadow: 0 8px 25px rgba(0, 242, 255, 0.85);
+  }
+  #contact form {
+    max-width: 520px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.3rem;
+  }
+  #contact label {
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+    display: inline-block;
+    color: #00e5ff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+  }
+  #contact input,
+  #contact textarea {
+    padding: 0.85rem 1.1rem;
+    border: 2px solid rgba(0, 242, 255, 0.5);
+    border-radius: 10px;
+    font-size: 1.05rem;
+    font-family: inherit;
+    resize: vertical;
+    background-color: rgba(0, 242, 255, 0.1);
+    color: #003344;
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+  }
+  #contact input::placeholder,
+  #contact textarea::placeholder {
+    color: #99e9ff;
+    font-style: italic;
+  }
+  #contact input:focus,
+  #contact textarea:focus {
+    outline: none;
+    border-color: #00e5ff;
+    background-color: rgba(0, 229, 255, 0.2);
+    color: #001622;
+  }
+  #contact button {
+    background: #00f2ff;
+    color: #001522;
+    border: none;
+    padding: 1rem 1.6rem;
+    font-size: 1.2rem;
+    font-weight: 800;
+    border-radius: 14px;
+    cursor: pointer;
+    box-shadow: 0 5px 17px rgba(0, 242, 255, 0.75);
+    transition: background 0.35s ease, color 0.35s ease, box-shadow 0.35s ease;
+  }
+  #contact button:hover {
+    background: #00cddd;
+    color: #003344;
+    box-shadow: 0 8px 25px rgba(0, 205, 205, 0.95);
+  }
+  footer {
+    background: #121212;
+    color: #ccc;
+    text-align: center;
+    padding: 1.4rem 0;
+    font-size: 0.9rem;
+  }
+  footer a {
+    color: #00f2ff;
+    text-decoration: none;
+  }
+  footer a:hover {
+    text-decoration: underline;
+  }
+  @media (max-width: 800px) {
+    nav {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    header {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+  }
+  @media (max-width: 650px) {
+    #about {
+      flex-direction: column;
+    }
+    #about img.about-photo {
+      margin-bottom: 1.8rem;
+      width: 100%;
+      height: auto;
+      max-width: 320px;
+      border-radius: 16px;
+    }
+  }
+  @media (max-width: 550px) {
+    header h1 {
+      font-size: 2.4rem;
+    }
+    nav ul {
+      gap: 1rem;
+      font-size: 0.9rem;
+    }
+    section h2 {
+      font-size: 2rem;
+    }
+    #projects .project-list {
+      grid-template-columns: 1fr;
+    }
+    .nav-links a:hover {
+    background-color: rgba(0, 242, 255, 0.3); /* Light blue on hover */
+    color: #121212;
+}
+
+    
+  }
+</style>
+<!-- FontAwesome CDN -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+
+<!-- Page top anchor -->
+<div id="top"></div>
+
+<nav>
+  <div class="nav-container">
+    <a href="#top" class="logo">Portfolio</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <!-- Contact removed -->
+    </ul>
+  </div>
+</nav>
+
+<header>
+  <div class="profile-photo">
+    <img src="image 2.jpg" alt="Profile photo of Angelica Angel" />
+  </div>
+  <div class="header-text">
+    <h1 class="typing"><a href="#top" style="color: #00f2ff; text-decoration: none;">Angelica Angel</a></h1>
+    <p class="subtitle">Creative Web Developer & UI Designer</p>
+    <p class="desc">Welcome to my portfolio!</p>
+    <div class="social-icons">
+      <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+      <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+      <a href="https://twitter.com/yourusername" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+    </div>
+    <a href="#contact" class="btn">Contact Me</a>
+  </div>
+</header>
+
+<main class="container">
+  <section id="about">
+    <h2>About Me</h2>
+    <p>Hello! I’m a passionate web developer with experience in building modern, responsive websites and web applications. I enjoy turning ideas into reality using clean, efficient code and great design. I’m always eager to learn new technologies and improve my craft.</p>
+  </section>
+
+
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="project-list">
+      <div class="project-card">
+        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=640&q=80" alt="Project 1 Screenshot" class="project-image" />
+        <div class="project-content">
+          <h3>Portfolio Website</h3>
+          <p>A personal portfolio website showcasing my skills and projects, built with HTML, CSS, and JavaScript.</p>
+          <a href="#" class="cta" target="_blank" rel="noopener noreferrer">View Project</a>
+        </div>
+      </div>
+      <div class="project-card">
+        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=640&q=80" alt="Project 2 Screenshot" class="project-image" />
+        <div class="project-content">
+          <h3>Task Manager App</h3>
+          <p>A productivity app to manage daily tasks with drag-and-drop and notifications, built using React and Firebase.</p>
+          <a href="#" class="cta" target="_blank" rel="noopener noreferrer">View Project</a>
+        </div>
+      </div>
+      <div class="project-card">
+        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=640&q=80" alt="Project 3 Screenshot" class="project-image" />
+        <div class="project-content">
+          <h3>E-Commerce Store</h3>
+          <p>A responsive e-commerce website with product filtering, cart features, and secure checkout.</p>
+          <a href="#" class="cta" target="_blank" rel="noopener noreferrer">View Project</a>
+        </div>
+      </div>
+      <!-- New fourth project with photo styled like others -->
+      <div class="project-card">
+        <img src="http://blog-assets.shawacademy.com/uploads/2016/09/blog2.jpg" alt="Blog Platform Screenshot" class="project-image" />
+        <div class="project-content">
+          <h3>Blog Platform</h3>
+          <p>A versatile blog platform with customizable themes, SEO optimization, and social sharing features.</p>
+          <a href="#" class="cta" target="_blank" rel="noopener noreferrer">View Project</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <h2>Skills</h2>
+    <div class="skills-list">
+      <span class="skill">HTML5</span>
+      <span class="skill">CSS3</span>
+      <span class="skill">JavaScript</span>
+      <span class="skill">React</span>
+      <span class="skill">Node.js</span>
+      <span class="skill">Git & GitHub</span>
+      <span class="skill">Responsive Design</span>
+      <span class="skill">REST APIs</span>
+      <span class="skill">Firebase</span>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Contact Me</h2>
+    <form id="contactForm" onsubmit="return handleSubmit(event);">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" placeholder="Your full name" required />
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="Your email address" required />
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="5" placeholder="Write your message here..." required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+    <p id="formStatus" style="text-align:center; margin-top:1rem; font-weight:600; color: #00f2ff;"></p>
+  </section>
+</main>
+
+<footer>
+  
+  <p>&copy; 2025 Angelica Angel. All rights reserved.</p>
+  <p>
+    <a href="#top" style="color: #00f2ff; text-decoration: none;">Back to top</a>
+  </p>
+</footer>
+
+</body>
+</html>
